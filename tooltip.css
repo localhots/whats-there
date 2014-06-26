@@ -1,0 +1,63 @@
+.whats-there-tooltip
+{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+
+    position: absolute;
+    z-index: 999999;
+
+    overflow: hidden;
+
+    width: 400px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, .2);
+}
+.whats-there-img
+{
+    float: left;
+
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: auto 100%;
+}
+.whats-there-title
+{
+    font-weight: 600;
+
+    overflow: hidden;
+
+    height: 18px;
+    margin: 5px 10px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.whats-there-description
+{
+    font-size: 13px;
+    line-height: 16px;
+
+    overflow: hidden;
+
+    height: 94px;
+    margin: 5px 10px;
+
+    color: #666;
+}
+.whats-there-site
+{
+    overflow: hidden;
+
+    height: 18px;
+    margin: 5px 10px;
+}

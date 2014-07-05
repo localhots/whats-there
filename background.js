@@ -164,14 +164,14 @@
         log('Event: '+ e_left +','+ e_top);
 
         // Default positioning
-        var t_top = s_top + e_top - t_height - 20,
+        var t_top = e_top - t_height - 20,
             t_left = s_left + e_left - t_width / 2;
 
         log('Initial position: '+ t_left +','+ t_top);
 
         if (t_top < 10) {
             // Vertical positioning correction
-            t_top = 10;
+            t_top = s_top + 10;
 
             if (e_left > w_width / 2) {
                 t_left = s_left + e_left - t_width - 20;

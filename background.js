@@ -10,6 +10,7 @@
         ];
 
     var links = document.getElementsByTagName('a');
+    main_loop:
     for (var i = 0; i < links.length; i++) {
         var el = links[i],
             href = el.getAttribute('href');
@@ -28,7 +29,7 @@
                 el.addEventListener('mouseover', function(e) {
                     log('Link contains a stop-word "'+ word +'":', href);
                 });
-                continue;
+                continue main_loop;
             }
         };
 

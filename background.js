@@ -132,39 +132,54 @@
     }
 
     function moveTooltip(e) {
-        var tt = document.getElementById('whats-there-tooltip'),
-            tt_width = tt.clientWidth,
-            tt_height = tt.clientHeight,
+        // Compact naming:
+        // t = Tooltip
+        // w = Window
+        // s = Scroll offset
+        // e = Event (mousemove) position
+        var t = document.getElementById('whats-there-tooltip'),
+            t_width = t.clientWidth,
+            t_height = t.clientHeight,
             w_width = window.innerWidth,
             w_height = window.innerHeight,
-            s_top = document.documentElement.scrollTop,
-            s_left = document.documentElement.scrollLeft,
+            s_top = (window.pageYOffset || document.documentElement.scrollTop),
+            s_left = (window.pageXOffset || document.documentElement.scrollLeft),
             e_top = e.clientY,
             e_left = e.clientX;
 
-        var tt_top = s_top + e_top - tt_height - 20,
-            tt_left = s_left + e_left - tt_width / 2;
+        log('Positioning tooltip');
+        log('Window: '+ w_width +'×'+ w_height);
+        log('Scroll: '+ s_left +','+ s_top);
+        log('Event: '+ e_left +','+ e_top);
 
-        // Vertical positioning fix
-        if (tt_top < 10) {
-            tt_top = 10;
+        // Default positioning
+        var t_top = s_top + e_top - t_height - 20,
+            t_left = s_left + e_left - t_width / 2;
+
+        log('Initial position: '+ t_left +','+ t_top);
+
+        if (t_top < 10) {
+            // Vertical positioning correction
+            t_top = 10;
 
             if (e_left > w_width / 2) {
-                tt_left = s_left + e_left - tt_width - 20;
+                t_left = s_left + e_left - t_width - 20;
             } else {
-                tt_left = s_left + e_left + 20;
+                t_left = s_left + e_left + 20;
             }
         } else {
-            // Horizontal positioning fixes
-            if (e_left - tt_width / 2 - 10 < s_left) {
-                tt_left = 10;
-            } else if (tt_left + tt_width + 10 > w_width) {
-                tt_left = w_width - tt_width - 10;
+            // Horizontal positioning correction
+            if (e_left - t_width / 2 - 10 < s_left) {
+                t_left = 10;
+            } else if (t_left + t_width + 10 > w_width) {
+                t_left = w_width - t_width - 10;
             }
         }
 
-        tt.style.top = tt_top + 'px';
-        tt.style.left = tt_left + 'px';
+        log('Position after correction: '+ t_left +','+ t_top);
+
+        t.style.top = t_top + 'px';
+        t.style.left = t_left + 'px';
     }
 
     function loadPageInfo(url, callback) {

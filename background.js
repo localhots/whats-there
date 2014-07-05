@@ -51,8 +51,13 @@
                 log('The mouse is OUT!');
 
                 if (STORAGE[i].xhr !== undefined) {
-                    STORAGE[i].xhr.abort();
-                    log('XHR aborted!');
+                    var state = STORAGE[i].xhr.readyState,
+                        done = STORAGE[i].xhr.DONE;
+
+                    if (state !== done) {
+                        STORAGE[i].xhr.abort();
+                        log('XHR aborted!');
+                    }
                 }
                 window.clearTimeout(STORAGE[i].load_timeout);
                 window.clearTimeout(STORAGE[i].show_timeout);

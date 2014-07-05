@@ -12,9 +12,15 @@
     "content_scripts": [
         {
             "all_frames": true,
-            "js": [ "background.js" ],
-            "css": [ "tooltip.css" ],
-            "matches": [ "\u003Call_urls>" ]
+            "js": [
+                "background.js"
+            ],
+            "css": [
+                "tooltip.css"
+            ],
+            "matches": [
+                "\u003Call_urls>"
+            ]
         }
     ]
 }

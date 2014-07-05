@@ -183,6 +183,9 @@
     }
 
     function loadPageInfo(url, callback) {
+        // TODO: Fetch wikipedia URLs from api instead of given URL
+        // http://en.wikipedia.org/w/api.php?format=json&action=query&titles=Page_Name&prop=info|pageimages|extracts&pithumbsize=300
+
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = function() {

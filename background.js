@@ -3,7 +3,11 @@
 
     var SHOW_TIMEOUT = 1000,
         LOAD_TIMEOUT = SHOW_TIMEOUT / 4,
-        STORAGE = {};
+        STORAGE = {}
+        STOP_WORDS = [
+            'signout', 'sign-out', 'sign_out',
+            'logout', 'log-out', 'log_out'
+        ];
 
     var links = document.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) {
@@ -17,6 +21,16 @@
             });
             continue;
         }
+        // Checking for "stop-words"
+        for (var i = 0; i < STOP_WORDS.length; i++) {
+            if (href.indexOf(STOP_WORDS[i]) > -1) {
+                var word = '' + STOP_WORDS[i];
+                el.addEventListener('mouseover', function(e) {
+                    log('Link contains a stop-word "'+ word +'":', href);
+                });
+                continue;
+            }
+        };
 
         STORAGE[i] = {};
         (function(i) {
@@ -164,12 +178,12 @@
         log('Event: '+ e_left +','+ e_top);
 
         // Default positioning
-        var t_top = e_top - t_height - 20,
+        var t_top = s_top + e_top - t_height - 20,
             t_left = s_left + e_left - t_width / 2;
 
         log('Initial position: '+ t_left +','+ t_top);
 
-        if (t_top < 10) {
+        if (e_top - t_height - 20 < 10) {
             // Vertical positioning correction
             t_top = s_top + 10;
 

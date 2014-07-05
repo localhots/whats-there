@@ -281,7 +281,8 @@
     }
 
     function log() {
-        if (false && console) {
+        if (typeof console !== 'undefined') {
+            Array.prototype.unshift.call(arguments, '[Whats There]');
             console.log.apply(console, arguments);
         }
     }

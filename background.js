@@ -1,5 +1,5 @@
 (function() {
-    log('Loaded');
+    log('Loaded on', '' + document.location);
 
     var SHOW_TIMEOUT = 1000,
         LOAD_TIMEOUT = SHOW_TIMEOUT / 4,

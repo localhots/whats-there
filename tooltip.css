@@ -11,6 +11,8 @@
 
     width: 400px;
 
+    text-align: left;
+
     border-width: 1px;
     border-style: solid;
     border-color: #ccc;
@@ -60,4 +62,7 @@
 
     height: 18px;
     margin: 5px 10px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

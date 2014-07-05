@@ -10,6 +10,9 @@
 
         // Skipping elements that has no href and anchor links
         if (href === null || href[0] === '#') {
+            el.addEventListener('mouseover', function(e) {
+                log('Pseudolink');
+            });
             continue;
         }
 

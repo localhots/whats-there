@@ -1,4 +1,6 @@
 (function() {
+    log('Loaded');
+
     var SHOW_TIMEOUT = 1000,
         LOAD_TIMEOUT = SHOW_TIMEOUT / 4,
         STORAGE = {};
@@ -21,9 +23,8 @@
             var el = links[i];
 
             el.addEventListener('mouseover', function(e) {
-                log('The mouse is OVER!');
-
                 if (STORAGE[i].result === undefined) {
+                    log('Loading page in '+ LOAD_TIMEOUT +'ms');
                     STORAGE[i].load_timeout = after(LOAD_TIMEOUT, function() {
                         STORAGE[i].xhr = loadPageInfo(el.href, function(res) {
                             log('Result loaded:', res);
@@ -36,6 +37,8 @@
                             }
                         });
                     });
+                } else {
+                    log('Page already loaded');
                 }
 
                 STORAGE[i].show_timeout = after(SHOW_TIMEOUT, function() {
@@ -46,9 +49,9 @@
                 });
             });
 
-            el.addEventListener('mouseout', function(e) {
+            var abort = function(e) {
+                log('Aborting');
                 hideTooltip();
-                log('The mouse is OUT!');
 
                 if (STORAGE[i].xhr !== undefined) {
                     var state = STORAGE[i].xhr.readyState,
@@ -59,9 +62,17 @@
                         log('XHR aborted!');
                     }
                 }
+
                 window.clearTimeout(STORAGE[i].load_timeout);
                 window.clearTimeout(STORAGE[i].show_timeout);
-            });
+
+                delete STORAGE[i].xhr;
+                delete STORAGE[i].e;
+                delete STORAGE[i].load_timeout;
+                delete STORAGE[i].show_timeout;
+            }
+            el.addEventListener('mouseout', abort);
+            el.addEventListener('click', abort);
 
             el.addEventListener('mousemove', function(e) {
                 STORAGE[i].e = e;
@@ -70,43 +81,43 @@
     }
 
     function showTooltip(el, info, e) {
-        var tt = document.getElementById('whats-there-tooltip');
-        if (tt !== null) {
-            // Don't show a tooltip if there's one already
+        var t = document.getElementById('whats-there-tooltip');
+        if (t !== null) {
+            log('Not showing tooltip, there is one already');
             return;
         }
 
         if (info.title === undefined && info.description === undefined) {
-            // Don't show a tooltip if there's no title nor descriptions for the page
+            log('Not showing tooltip, missing both title and description attributes');
             return;
         }
 
-        var tt = document.createElement('div'),
+        var t = document.createElement('div'),
             body = document.getElementsByTagName('body')[0],
             bounds = el.getBoundingClientRect();
 
-        tt.setAttribute('class', 'whats-there-tooltip');
-        tt.setAttribute('id', 'whats-there-tooltip');
+        t.setAttribute('class', 'whats-there-tooltip');
+        t.setAttribute('id', 'whats-there-tooltip');
 
         if (info.image_url !== undefined) {
             var div = document.createElement('div');
             div.setAttribute('class', 'whats-there-img');
             div.style.backgroundImage = 'url(' + info.image_url + ')';
-            tt.appendChild(div);
+            t.appendChild(div);
         }
 
         if (info.title !== undefined) {
             var div = document.createElement('div');
             div.setAttribute('class', 'whats-there-title');
             div.innerText = info.title;
-            tt.appendChild(div);
+            t.appendChild(div);
         }
 
         if (info.description !== undefined) {
             var div = document.createElement('div');
             div.setAttribute('class', 'whats-there-description');
             div.innerText = info.description;
-            tt.appendChild(div);
+            t.appendChild(div);
         }
 
         var site_name;
@@ -118,16 +129,16 @@
         var div = document.createElement('div');
         div.setAttribute('class', 'whats-there-site');
         div.innerText = site_name;
-        tt.appendChild(div);
+        t.appendChild(div);
 
-        body.appendChild(tt);
+        body.appendChild(t);
         moveTooltip(e);
     }
 
     function hideTooltip() {
-        var tt = document.getElementById('whats-there-tooltip');
-        if (tt !== null) {
-            tt.parentNode.removeChild(tt);
+        var t = document.getElementById('whats-there-tooltip');
+        if (t !== null) {
+            t.parentNode.removeChild(t);
         }
     }
 
@@ -193,7 +204,7 @@
                 var ct = this.getResponseHeader('Content-Type');
 
                 // Aborting page load if it's not HTML
-                if (ct === null || ct.indexOf('text/html') != 0) {
+                if (ct === null || ct.indexOf('text/html') !== 0) {
                     this.abort();
                 }
             } else if (this.readyState === this.DONE && this.status === 200) {
